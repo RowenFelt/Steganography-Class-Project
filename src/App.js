@@ -18,11 +18,6 @@ class App extends Component {
         <InfoBar />
         <br>
         </br>
-        <ButtonToolbar>
-          <Button variant = "info">Encode Image</Button>
-          <Button variant = "info">Decode Image</Button>
-        </ButtonToolbar>
-
       </div>
     );
   }
