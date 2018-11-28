@@ -3,16 +3,21 @@ import skimage.color as skc
 import matplotlib.pyplot as plt
 import numpy as np
 from skimage.transform import rescale as rescale
+import stego_functions as sf
 
-bed = skio.imread('bed.jpg')
-bedg = skc.rgb2gray(bed)
+lamp = skio.imread('lamp.JPG')
+lampg = skc.rgb2gray(lamp)
+print("lampg",lampg)
 
 house = skio.imread('house.JPG')
 houseg = skc.rgb2gray(house)
+print("Houseg",houseg)
 
-encodeGray(bedg, houseg, 'newhouse.png')
+sf.encodeGray(lampg, houseg, 'newhouse')
 new_house = skio.imread('newhouse.png')
-
-decodeGray(new_house, "Hidden_image.png")
+print(new_house)
+print(new_house.dtype)
+#
+sf.decodeGray(new_house, "Hidden_image")
 
 

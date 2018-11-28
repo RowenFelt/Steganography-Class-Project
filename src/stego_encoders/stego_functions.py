@@ -6,7 +6,12 @@ from skimage.transform import rescale as rescale
 
 def encodeGray(hidden, base, filename):
     # hidden and base are two numpy arrays
+    # Check the datatypes
+    print("hidden.dtype",hidden.dtype)
+    if((hidden.dtype != "float64") or (base.dtype != "float64")):
+        raise TypeError('Both matrices must be type uint8')
     # total number of pixels of hidden must be 1/8 of base
+    base = (base*255).astype(int)
     hpx = hidden.shape[0] * hidden.shape[1]
     bpx = base.shape[0] * base.shape[1]
     base_shape = base.shape
@@ -16,12 +21,10 @@ def encodeGray(hidden, base, filename):
         hpx = hidden_new.shape[0] * hidden_new.shape[1]
         x+= 1
     # unravel matrices into arrays
-    hidden_new *= 255
     print("hidden shape = ", hidden_new.shape)
     print("hidden length = ", str(hpx))
+    hidden_new *= 255
     hidden = np.reshape(hidden_new, hpx)
-    #base = (base*255).astype(int)
-    #base = base.astype(int)
     base = np.reshape(base, bpx)
     # iterate through all elements of hidden, keep counter in base, increment for each shift in hidden
     # encode each element in hidden.shape in first 24 lowest bits of base
@@ -41,13 +44,17 @@ def encodeGray(hidden, base, filename):
             base[count] = ((base[count] // 2) * 2) + bit
             count += 1
     base = np.reshape(base, base_shape)
-    skio.imsave(filename, base)
+    savename = filename + ".png"
+    skio.imsave(savename, base)
 
 def decodeGray(base, filename):
     # base is a 2D numpy array
+    if(base.dtype != "uint8"):
+        raise TypeError('Base must be a numpy matrix of type uint8')
     # first 2 12 byte intervals refer to shape of the hidden image
     bpx = base.shape[0] * base.shape[1]
     base = np.reshape(base, bpx)
+    print("base after reshape = ",base)
     shape = [0, 0]
     for i in range(0,2):
         for j in range(0,12):
@@ -55,13 +62,20 @@ def decodeGray(base, filename):
             shape[i] = shape[i] | ((2**j)* bit)
     print("shape = ", shape)
     length = shape[0] * shape[1]
-    hidden = np.zeros(length, dtype="int8")
+    #check length against actual size of base image
+    if(length > (bpx - 24)):
+        print("Theoretical hidden image is too large to be encoded in base image")
+        return False
+    hidden = np.zeros(length, dtype="uint8")
     # decode next length*8 bytes
     count = 0
+    print("base = ", (int(base[-1]) & 1))
     for x in range(24, length * 8):
-            bit = base[x] & 1
-            location = (x-24)//8
-            hidden[location] = hidden[location] | ((2**count)*bit)
-            count = (count + 1) % 8
+        bit = base[x] & 1
+        location = (x-24)//8
+        hidden[location] = hidden[location] | ((2**count)*bit)
+        count = (count + 1) % 8
     hidden_new = np.reshape(hidden, (shape[0], shape[1]))
-    skio.imsave(filename, hidden_new)
+    print("hidden_new", hidden_new)
+    savename = filename + ".png"
+    skio.imsave(savename, hidden_new)
