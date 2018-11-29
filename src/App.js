@@ -1,20 +1,12 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
-import { Button, ButtonToolbar } from 'react-bootstrap';
-import InfoBar from './components/InfoBar';
 import './App.css';
-
-
-const Title = styled.h1`
-  text-align: center
-`;
+import InfoBar from './Components/InfoBar';
 
 class App extends Component {
   render() {
-
     return (
       <div className="App">
-        <Title>Steganography Project - The Encoder</Title>
+        <h1>Steganography Project - The Encoder</h1>
         <InfoBar />
         <br>
         </br>
