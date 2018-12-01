@@ -9,7 +9,7 @@ def encodeGray(hidden, base):
     # Check the datatypes
     print("hidden.dtype",hidden.dtype)
     if((hidden.dtype != "float64") or (base.dtype != "float64")):
-        raise TypeError('Both matrices must be type uint8')
+        raise TypeError('Both matrices must be type float64')
     # total number of pixels of hidden must be 1/8 of base
     base = (base*255).astype(int)
     hpx = hidden.shape[0] * hidden.shape[1]
@@ -80,27 +80,69 @@ def decodeGray(base):
 
 def saveEncodedGray(base, hidden, filename):
     encoded = encodeGray(base, hidden)
-    if(encoded == False):
+    if(type(encoded) is not np.ndarray):
         return False
     savename = filename + ".png"
     skio.imsave(savename, encoded)
 
 def saveDecodedGray(base, filename):
     decoded = decodeGray(base)
-    if(decoded == False):
+    if(type(decoded) is not np.ndarray):
         return False
     savename = filename + ".png"
     skio.imsave(savename, decoded)
 
 def encodeColor(hidden, base):
     # base and hidden must both be color images with values between 0-255
-    if(base.dtype != "int" or hidden.dtype != "int"):
+    if(base.dtype != "uint8" or hidden.dtype != "uint8"):
         raise TypeError('Base and Image must both be int arrays')
     base = base.astype("float64")
     hidden = hidden.astype("float64")
+    base = base/255
+    hidden = hidden/255
     colors = ["red", "green", "blue"]
     basefields = {}
+    hiddenfields = {}
     for color in range(0,len(colors)):
-        basefields[colors[i]] = base[:,i]
-    print(basefields)
+        basefields[colors[color]] = base[:,:,color]
+        hiddenfields[colors[color]] = hidden[:,:,color]
+    for color in colors:
+        basefields[color + "encoded"]= encodeGray(hiddenfields[color], basefields[color])
+        if(type(basefields[color + "encoded"]) is not np.ndarray):
+            return False
+    return np.dstack((basefields["redencoded"],basefields["greenencoded"],basefields["blueencoded"]))
+
+def decodeColor(base):
+    # base must both be color images with values between 0-255
+    if(base.dtype != "uint8"):
+        raise TypeError('Base must both be int arrays')
+    base = base.astype("float64")
+    base = base/255
+    hidden = hidden/255
+    colors = ["red", "green", "blue"]
+    basefields = {}
+    hiddenfields = {}
+    for color in range(0,len(colors)):
+        basefields[colors[color]] = base[:,:,color]
+        hiddenfields[colors[color]] = hidden[:,:,color]
+    for color in colors:
+        basefields[color + "encoded"]= encodeGray(hiddenfields[color], basefields[color])
+        if(type(basefields[color + "encoded"]) is not np.ndarray):
+            return False
+    return np.dstack((basefields["redencoded"],basefields["greenencoded"],basefields["blueencoded"]))
+
+
+def saveEncodedColor(base, hidden, filename):
+    encoded = encodeColor(hidden, base)
+    if(type(encoded) is not np.ndarray):
+        return False
+    savename = filename + ".png"
+    skio.imsave(savename, encoded)
+
+def saveDecodedColor(base, filename):
+    decoded = decodeColor(base)
+    if(type(decoded) is not np.ndarray):
+        return False
+    savename = filename + ".png"
+    skio.imsave(savename, decoded)
 
