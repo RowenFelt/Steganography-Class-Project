@@ -115,21 +115,16 @@ def encodeColor(hidden, base):
 def decodeColor(base):
     # base must both be color images with values between 0-255
     if(base.dtype != "uint8"):
-        raise TypeError('Base must both be int arrays')
-    base = base.astype("float64")
-    base = base/255
-    hidden = hidden/255
+        raise TypeError('Base must be int arrays')
     colors = ["red", "green", "blue"]
     basefields = {}
-    hiddenfields = {}
     for color in range(0,len(colors)):
         basefields[colors[color]] = base[:,:,color]
-        hiddenfields[colors[color]] = hidden[:,:,color]
     for color in colors:
-        basefields[color + "encoded"]= encodeGray(hiddenfields[color], basefields[color])
-        if(type(basefields[color + "encoded"]) is not np.ndarray):
+        basefields[color + "decoded"]= decodeGray(basefields[color])
+        if(type(basefields[color + "decoded"]) is not np.ndarray):
             return False
-    return np.dstack((basefields["redencoded"],basefields["greenencoded"],basefields["blueencoded"]))
+    return np.dstack((basefields["reddecoded"],basefields["greendecoded"],basefields["bluedecoded"]))
 
 
 def saveEncodedColor(base, hidden, filename):

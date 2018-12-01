@@ -16,4 +16,6 @@ house = skio.imread('house.JPG')
 #
 #sf.saveDecodedGray(new_house, "Hidden_image")
 
-sf.saveEncodedColor(house, lamp, 'colorhouse')
+colorhouse = skio.imread('colorhouse.png')
+sf.saveDecodedColor(colorhouse, 'colorlamp')
+#sf.saveEncodedColor(house, lamp, 'colorhouse')
