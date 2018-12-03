@@ -1,3 +1,0 @@
-#!/usr/bin/bash
-
-FLASK_APP=simple_server.py flask run

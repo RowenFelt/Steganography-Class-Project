@@ -13,6 +13,7 @@ class ImageUpload extends Component {
 
     this.state = {
       message: '',
+      imageurl: '',
     };
   }
 
@@ -24,12 +25,12 @@ class ImageUpload extends Component {
 
 
     const reader = new FileReader();
-    reader.readAsBinaryString(file);
+    reader.readAsArrayBuffer(file);
     reader.onloadend = () => {
       contents = reader.result;
 
       const request = new Request(
-        'http://127.0.0.1:5000/decode',
+        '/decode',
         {
           method: 'POST',
           body: contents,
@@ -43,8 +44,8 @@ class ImageUpload extends Component {
           }
           return response.json();
         })
-        .then((linterOutput) => {
-          callbackProp(contents, linterOutput);
+        .then((jsonurl) => {
+          this.setState({imageurl: jsonurl.url});
         });
     };
   }
@@ -57,6 +58,9 @@ class ImageUpload extends Component {
       <div>
         {uploadButton}
         <h1 align="center" >{this.state.message}</h1>
+        {
+          this.state.imageurl && (<img src={this.state.imageurl}/>)
+        }
       </div>
     );
   }
