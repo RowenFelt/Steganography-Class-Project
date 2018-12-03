@@ -12,7 +12,7 @@
 import React from 'react';
 import { TabContent, TabPane, Nav, NavItem, NavLink, Card, Button, CardTitle, CardText, Row, Col, Form, FormGroup,
   Label, Input, FormText, CardDeck, CardImg, CardBody, CardGroup, CardSubtitle } from 'reactstrap';
-import ImageUpload from './imageupload.js'
+
 import classnames from 'classnames';
 import julia from './Images/Julia.JPG';
 
@@ -42,7 +42,7 @@ export default class InfoBar extends React.Component {
               className={classnames({ active: this.state.activeTab === '1' })}
               onClick={() => { this.toggle('1'); }}
             >
-              About
+              Home
             </NavLink>
           </NavItem>
           <NavItem>
@@ -50,29 +50,21 @@ export default class InfoBar extends React.Component {
               className={classnames({ active: this.state.activeTab === '2' })}
               onClick={() => { this.toggle('2'); }}
             >
-              Encode Image
+              About
             </NavLink>
           </NavItem>
           <NavItem>
             <NavLink
-              className={classnames({ active: this.state.activeTab === '3' })}
+              className={classnames({ active: this.state.activeTab === '2' })}
               onClick={() => { this.toggle('3'); }}
-            >
-              Decode Image
-            </NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink
-              className={classnames({ active: this.state.activeTab === '4' })}
-              onClick={() => { this.toggle('4'); }}
             >
               Team
             </NavLink>
           </NavItem>
           <NavItem>
             <NavLink
-              className={classnames({ active: this.state.activeTab === '5' })}
-              onClick={() => { this.toggle('5'); }}
+              className={classnames({ active: this.state.activeTab === '2' })}
+              onClick={() => { this.toggle('4'); }}
             >
               Contact Us
             </NavLink>
@@ -80,6 +72,17 @@ export default class InfoBar extends React.Component {
         </Nav>
         <TabContent activeTab={this.state.activeTab}>
           <TabPane tabId="1">
+            <Row>
+              <Col sm="12">
+                <br/ >
+                <div>
+                <Button color="link">Encode Image</Button>{' '}
+                <Button color="link">Decode Image</Button>
+                </div>
+              </Col>
+            </Row>
+          </TabPane>
+          <TabPane tabId="2">
             <Row>
               <Col sm="12">
               <br />
@@ -115,40 +118,7 @@ export default class InfoBar extends React.Component {
               </Col>
             </Row>
           </TabPane>
-          <TabPane tabId="2">
-            <Row>
-              <Col sm="12">
-                <br/ >
-                <div>
-                {
-
-                }
-                <ImageUpload
-          callback={(userCode, userOutput) => this.setState({ pyCode: userCode, linterOutput: userOutput, mode: 'view' })}
-          startLoad={() => this.setState({ mode: 'loading' })}/>
-                <ImageUpload
-          callback={(userCode, userOutput) => this.setState({ pyCode: userCode, linterOutput: userOutput, mode: 'view' })}
-          startLoad={() => this.setState({ mode: 'loading' })}/>
-                </div>
-              </Col>
-            </Row>
-          </TabPane>
           <TabPane tabId="3">
-            <Row>
-              <Col sm="12">
-                <br/ >
-                <div>
-                {
-
-                }
-                <ImageUpload
-          callback={(userCode, userOutput) => this.setState({ pyCode: userCode, linterOutput: userOutput, mode: 'view' })}
-          startLoad={() => this.setState({ mode: 'loading' })}/>
-                </div>
-              </Col>
-            </Row>
-          </TabPane>
-          <TabPane tabId="4">
           <CardGroup>
             <Card>
               <CardImg top width="100%" src={julia} alt="Card image cap" />
@@ -176,14 +146,10 @@ export default class InfoBar extends React.Component {
             </Card>
             </CardGroup>
           </TabPane>
-          <TabPane tabId="5">
+          <TabPane tabId="4">
             <Row>
               <Col sm="12">
               <Form align = "left">
-                <FormGroup>
-                  <Label for="exampleName"><b>Name</b></Label>
-                  <Input type="email" name="user_name" id="exampleName" placeholder="Your name" />
-                </FormGroup>
                 <FormGroup>
                   <Label for="exampleEmail"><b>Email</b></Label>
                   <Input type="email" name="email" id="exampleEmail" placeholder="Insert your email here" />
@@ -192,7 +158,6 @@ export default class InfoBar extends React.Component {
                   <Label for="exampleText"><b>Ask Us A Question</b></Label>
                   <Input type="textarea" name="text" id="exampleText" />
                 </FormGroup>
-                <Button> Submit </Button>
               </Form>
               </Col>
             </Row>
