@@ -79,6 +79,7 @@ class ImageEncode extends Component {
         })
         .then((jsonurl) => {
           this.setState({imageurl: jsonurl.url});
+          console.log(jsonurl.url);
         });
     };
   }

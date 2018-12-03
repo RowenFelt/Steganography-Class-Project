@@ -4,7 +4,10 @@ import skimage.io as skio
 import png
 import flask_cors
 import os
+import string
+import random
 from decorator import crossdomain
+from time import sleep
 
 app = Flask(__name__)
 flask_cors.CORS(app)
@@ -16,6 +19,9 @@ ALLOWED_EXTENSIONS = {
         "decode": ['png']
         }
 
+decoded_images = []
+encoded_images = []
+
 @app.after_request
 def after_request(response):
   response.headers.add('Access-Control-Allow-Origin', '*')
@@ -23,10 +29,13 @@ def after_request(response):
   response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
   return response
 
-def removeTempFiles():
-    for i in ["decoded.png", "uploaded-for-decoding.png"]:
+def removeTempFiles(images):
+    for i in images:
         if os.path.exists(i):
             os.remove(i)
+
+def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
+    return ''.join(random.choice(chars) for _ in range(size))
 
 def allowed_file(filename, version):
     return '.' in filename and \
@@ -34,13 +43,17 @@ def allowed_file(filename, version):
 
 @app.route('/decode', methods=['POST'])
 def upload_file_decode():
-    removeTempFiles()
+    removeTempFiles(decoded_images)
     with open("uploaded-for-decoding.png", "wb") as binary_file:
         num_bytes_written = binary_file.write(request.data)
         base = skio.imread('uploaded-for-decoding.png')
-    sf.saveDecoded(base, "decoded")
-    imageurl = "/decoded.png"
+    filename = "decoded" + id_generator()
+    sf.saveDecoded(base, filename)
+    imageurl = filename + ".png"
+    decoded_images.append(imageurl)
     urldict = {"url": imageurl}
+    if(os.path.exists("uploaded-for-decoding.png")):
+        os.remove("uploaded-for-decoding.png")
     return jsonify(urldict)
 
 @app.route('/<filename>')
@@ -50,27 +63,35 @@ def uploaded_file(filename):
                                filename)
 @app.route('/encodefirst', methods=['GET', 'POST'])
 def upload_file_encode_first():
-    if(os.path.exists("base.png"):
-            os.remove("base.png")
-    with open("base.png", "wb") as binary_file:
+    if(os.path.exists("base.JPG")):
+            os.remove("base.JPG")
+    with open("base.JPG", "wb") as binary_file:
         num_bytes_written = binary_file.write(request.data)
-        base = skio.imread('base.png')
-    urldit = {"url": '/base.png'}
+    urldict = {"url": '/base.JPG'}
     return jsonify(urldict)
 
 @app.route('/encodesecond', methods=['GET', 'POST'])
-def upload_file_encode_first():
-    if(os.path.exists("hidden.png"):
-            os.remove("hidden.png")
-    with open("hidden.png", "wb") as binary_file:
+def upload_file_encode_second():
+    if(os.path.exists("hidden.JPG")):
+            os.remove("hidden.JPG")
+    removeTempFiles(encoded_images)
+    with open("hidden.JPG", "wb") as binary_file:
         num_bytes_written = binary_file.write(request.data)
-        base = skio.imread('hidden.png')
-    if(os.path.exists("base.png"):
-        base = skio.imread("base.png")
-        hidden = skio.imread("hidden.png")
-        sf.saveEncoded(base, hidden, 'encoded_image.png')
-    urldit = {"url": '/encoded_image.png'}
-    return jsonify(urldict)
+    while(not os.path.exists("base.JPG")):
+        sleep(1)
+    if(os.path.exists("base.JPG")):
+        base = skio.imread("base.JPG")
+        hidden = skio.imread("hidden.JPG")
+        filename='encoded_image' + id_generator()
+        sf.saveEncoded(base, hidden, filename)
+        urldict = {"url": filename + ".png"}
+        if(os.path.exists("hidden.JPG")):
+            os.remove("hidden.JPG")
+        if(os.path.exists("base.JPG")):
+            os.remove("base.JPG")
+        return jsonify(urldict)
+    else:
+        return jsonify({"url": ''})
 
 if __name__ == "__main__":
     app.secret_key = 'super secret key'
