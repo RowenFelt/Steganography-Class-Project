@@ -90,16 +90,20 @@ class ImageEncode extends Component {
    const uploadButtonHidden = <Input type="file" id="file2" placeholder="Encode" onChange={e => this.secondFileHandler(e.target.files[0], this.props)} />;
 
     return (
-        <div>
+        <FormGroup>
+        <Form>
         <p><b>Choose an image as the base image:</b></p>
         {uploadButtonBase}
+        </Form>
+        <Form>
         <p><b>Choose an image to be hidden:</b></p>
         {uploadButtonHidden}
         <h1 align="center" >{this.state.message}</h1>
         {
           this.state.imageurl && (<img src={this.state.imageurl}/>)
         }
-        </div>
+        </Form>
+        </FormGroup>
     );
   }
 }
