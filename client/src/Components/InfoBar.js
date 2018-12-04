@@ -10,12 +10,10 @@
 */
 /* eslint no-underscore-dangle: [2, { "allow": ["_id"] }] */
 import React from 'react';
-import { TabContent, TabPane, Nav, NavItem, NavLink, Card, Button, CardTitle, CardText, Row, Col, Form, FormGroup,
-  Label, Input, CardImg, CardBody, CardGroup, CardSubtitle } from 'reactstrap';
+import { TabContent, TabPane, Nav, NavItem, NavLink, Button, Row, Col, Form, FormGroup, Label, Input} from 'reactstrap';
 import ImageUpload from './imageupload.js'
 import ImageEncode from './imageencode.js'
 import classnames from 'classnames';
-import julia from './Images/Julia.JPG';
 
 export default class InfoBar extends React.Component {
   constructor(props) {
@@ -67,14 +65,6 @@ export default class InfoBar extends React.Component {
               className={classnames({ active: this.state.activeTab === '4' })}
               onClick={() => { this.toggle('4'); }}
             >
-              Team
-            </NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink
-              className={classnames({ active: this.state.activeTab === '5' })}
-              onClick={() => { this.toggle('5'); }}
-            >
               Contact Us
             </NavLink>
           </NavItem>
@@ -113,6 +103,7 @@ export default class InfoBar extends React.Component {
               that pixel by one hue, which is an imperceptibly change in color in a high frequency image with substantial
               color variation. To decode the 1 image, the least significant bits of adjacent pixels are concatenated
               together to represent the pixel intensities or RGB color values of the hidden images pixels.</p>
+              <p align="left"><b>Authors:</b> Casey Astiz (Middlebury College), Julia Athayde (Middlebury College) and Rowen Felt (Middlebury Colelge)</p>
               </Col>
             </Row>
           </TabPane>
@@ -120,11 +111,11 @@ export default class InfoBar extends React.Component {
             <Row>
               <Col sm="12">
                 <br/ >
-                <div>
-      <ImageEncode
-          callback={(userCode, userOutput) => this.setState({ pyCode: userCode, linterOutput: userOutput, mode: 'view' })}
-          startLoad={() => this.setState({ mode: 'loading' })}/>
-                </div>
+                <Form align="left">
+                <ImageEncode
+                  callback={(userCode, userOutput) => this.setState({ pyCode: userCode, linterOutput: userOutput, mode: 'view' })}
+                  startLoad={() => this.setState({ mode: 'loading' })}/>
+                </Form>
               </Col>
             </Row>
           </TabPane>
@@ -142,34 +133,6 @@ export default class InfoBar extends React.Component {
             </Row>
           </TabPane>
           <TabPane tabId="4">
-          <CardGroup>
-            <Card>
-              <CardImg top width="100%" src={julia} alt="Card image cap" />
-              <CardBody>
-                <CardTitle>Julia Athayde</CardTitle>
-                <CardSubtitle>Computer Science & Economics '19'</CardSubtitle>
-                <CardText>This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</CardText>
-              </CardBody>
-            </Card>
-            <Card>
-              <CardImg top width="100%" src="https://placeholdit.imgix.net/~text?txtsize=33&txt=256%C3%97180&w=256&h=180" alt="Card image cap" />
-              <CardBody>
-                <CardTitle>Casey Astiz</CardTitle>
-                <CardSubtitle>Computer Science & Economics '19</CardSubtitle>
-                <CardText>This card has supporting text below as a natural lead-in to additional content.</CardText>
-              </CardBody>
-            </Card>
-            <Card>
-              <CardImg top width="100%" src="https://placeholdit.imgix.net/~text?txtsize=33&txt=256%C3%97180&w=256&h=180" alt="Card image cap" />
-              <CardBody>
-                <CardTitle>Rowen Felt</CardTitle>
-                <CardSubtitle>Computer Science '19</CardSubtitle>
-                <CardText>This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</CardText>
-              </CardBody>
-            </Card>
-            </CardGroup>
-          </TabPane>
-          <TabPane tabId="5">
             <Row>
               <Col sm="12">
               <Form align = "left">

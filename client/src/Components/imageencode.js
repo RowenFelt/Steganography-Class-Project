@@ -3,7 +3,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {Input} from 'reactstrap';
+import { Input, Form, FormGroup } from 'reactstrap';
 
 
 class ImageEncode extends Component {
@@ -90,14 +90,16 @@ class ImageEncode extends Component {
    const uploadButtonHidden = <Input type="file" id="file2" placeholder="Encode" onChange={e => this.secondFileHandler(e.target.files[0], this.props)} />;
 
     return (
-      <div>
+        <div>
+        <p><b>Choose an image as the base image:</b></p>
         {uploadButtonBase}
+        <p><b>Choose an image to be hidden:</b></p>
         {uploadButtonHidden}
         <h1 align="center" >{this.state.message}</h1>
         {
           this.state.imageurl && (<img src={this.state.imageurl}/>)
         }
-      </div>
+        </div>
     );
   }
 }
