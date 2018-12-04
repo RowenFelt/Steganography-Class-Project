@@ -3,7 +3,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {Input} from 'reactstrap';
+import {Input, Form} from 'reactstrap';
 
 
 class ImageUpload extends Component {
@@ -55,13 +55,13 @@ class ImageUpload extends Component {
     const uploadButton = <Input type="file" id="file" placeholder="Encode" onChange={e => this.handleChange(e.target.files[0], this.props)} />;
 
     return (
-      <div>
+      <Form>
         {uploadButton}
         <h1 align="center" >{this.state.message}</h1>
         {
           this.state.imageurl && (<img src={this.state.imageurl}/>)
         }
-      </div>
+      </Form>
     );
   }
 }
