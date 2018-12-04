@@ -13,6 +13,7 @@ import React from 'react';
 import { TabContent, TabPane, Nav, NavItem, NavLink, Card, Button, CardTitle, CardText, Row, Col, Form, FormGroup,
   Label, Input, FormText, CardDeck, CardImg, CardBody, CardGroup, CardSubtitle } from 'reactstrap';
 import ImageUpload from './imageupload.js'
+import ImageEncode from './imageencode.js'
 import classnames from 'classnames';
 import julia from './Images/Julia.JPG';
 
@@ -123,10 +124,7 @@ export default class InfoBar extends React.Component {
                 {
 
                 }
-                <ImageUpload
-          callback={(userCode, userOutput) => this.setState({ pyCode: userCode, linterOutput: userOutput, mode: 'view' })}
-          startLoad={() => this.setState({ mode: 'loading' })}/>
-                <ImageUpload
+      <ImageEncode
           callback={(userCode, userOutput) => this.setState({ pyCode: userCode, linterOutput: userOutput, mode: 'view' })}
           startLoad={() => this.setState({ mode: 'loading' })}/>
                 </div>
