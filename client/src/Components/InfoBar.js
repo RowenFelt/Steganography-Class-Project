@@ -13,6 +13,7 @@ import React from 'react';
 import { TabContent, TabPane, Nav, NavItem, NavLink, Card, Button, CardTitle, CardText, Row, Col, Form, FormGroup,
   Label, Input, CardImg, CardBody, CardGroup, CardSubtitle } from 'reactstrap';
 import ImageUpload from './imageupload.js'
+import ImageEncode from './imageencode.js'
 import classnames from 'classnames';
 import julia from './Images/Julia.JPG';
 
@@ -119,16 +120,11 @@ export default class InfoBar extends React.Component {
             <Row>
               <Col sm="12">
                 <br/ >
-                <Form align = "left">
-                <p><b>Choose an image as the base image:</b></p>
-                <ImageUpload
-                  callback={(userCode, userOutput) => this.setState({ pyCode: userCode, linterOutput: userOutput, mode: 'view' })}
-                  startLoad={() => this.setState({ mode: 'loading' })}/>
-                <p><b>Choose an image as the image to be hidden:</b></p>
-                <ImageUpload
-                  callback={(userCode, userOutput) => this.setState({ pyCode: userCode, linterOutput: userOutput, mode: 'view' })}
-                  startLoad={() => this.setState({ mode: 'loading' })}/>
-                </Form>
+                <div>
+      <ImageEncode
+          callback={(userCode, userOutput) => this.setState({ pyCode: userCode, linterOutput: userOutput, mode: 'view' })}
+          startLoad={() => this.setState({ mode: 'loading' })}/>
+                </div>
               </Col>
             </Row>
           </TabPane>
