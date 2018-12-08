@@ -74,7 +74,7 @@ def nat_img_dect3(img, debug=False):
     edge detection"""
     natural = False
 
-    #sigma = 3, takes away lot of the edges, and leaves noisy images black
+    #sigma = 3, takes away lot of the edges on mandrill, and leaves noisy images black
     edges = feature.canny(img, 5)
 
 
@@ -126,58 +126,61 @@ def nat_img_dect4(img, debug=False):
 
 def test_encoders():
     """This function runs all the natural image detectors on a set of images"""
-    # file = open('stego_encoders/results_natural_image_detector_decoded.txt', 'w')
-    # file.write('image\tr1\tr2\tr3\tr4\n')
 
-    file = open('stego_encoders/conv_mean_test.txt', 'w')
-    file.write('image\tr1\n')
+    file = open('stego_encoders/results_natural_image_detector_decoded.txt', 'w')
+    file.write('image\tr1\tr2\tr3\tr4\n')
+
     images = glob.glob("stego_encoders/decoded_imgs/*.*")
     images2 = glob.glob("stego_encoders/testing_images/*.*")
-
-    for image in images2:
-        img = skio.imread(image)
-        try:
-            r2 = nat_img_dect2(img)
-        except Exception as e:
-            r2 = "fail"
-        line = '\t'.join([str(image), str(r2)] )
-        print(line)
-        file.write(line + '\n')
 
     for image in images:
         img = skio.imread(image)
         try:
+            r1 = nat_img_dect1(img)
+        except Exception as e:
+            r1 = "fail"
+        try:
             r2 = nat_img_dect2(img)
         except Exception as e:
             r2 = "fail"
-        line = '\t'.join([str(image), str(r2)] )
+        try:
+            r3 = nat_img_dect3(img)
+        except Exception as e:
+            r3 = "fail"
+        try:
+            r4 = nat_img_dect4(img)
+        except Exception as e:
+            r4 = "fail"
+
+        line = '\t'.join([str(image), str(r1), str(r2), str(r3), str(r4)] )
         print(line)
         file.write(line + '\n')
 
-    # for image in images:
-    #     img = skio.imread(image)
-    #     try:
-    #         r1 = nat_img_dect1(img)
-    #     except Exception as e:
-    #         r1 = "fail"
-    #     try:
-    #         r2 = nat_img_dect2(img)
-    #     except Exception as e:
-    #         r2 = "fail"
-    #     try:
-    #         r3 = nat_img_dect3(img)
-    #     except Exception as e:
-    #         r3 = "fail"
-    #     try:
-    #         r4 = nat_img_dect4(img)
-    #     except Exception as e:
-    #         r4 = "fail"
-    #
-    #     line = '\t'.join([str(image), str(r1), str(r2), str(r3), str(r4)] )
-    #     print(line)
-    #     file.write(line + '\n')
+    for image in images2:
+        img = skio.imread(image)
+        try:
+            r1 = nat_img_dect1(img)
+        except Exception as e:
+            r1 = "fail"
+        try:
+            r2 = nat_img_dect2(img)
+        except Exception as e:
+            r2 = "fail"
+        try:
+            r3 = nat_img_dect3(img)
+        except Exception as e:
+            r3 = "fail"
+        try:
+            r4 = nat_img_dect4(img)
+        except Exception as e:
+            r4 = "fail"
+
+        line = '\t'.join([str(image), str(r1), str(r2), str(r3), str(r4)] )
+        print(line)
+        file.write(line + '\n')
 
 def make_test_images():
+    """Goes through a directory of images and saves images that can be decoded"""
     images = glob.glob("stego_encoders/testing_images/*.*")
     i = 0
 
@@ -197,40 +200,40 @@ def make_test_images():
 
 
 
-def main():
+def main(make_img=False, debug=False):
     """using main to run my testing"""
+    if debug:
+        mandrill = skio.imread('mandrill.png')
 
-    # mandrill = skio.imread('mandrill.png')
-    #
-    # noise = skio.imread('noise.png')
-    #
-    # cameraman = skio.imread('cameraman.png')
-    #
-    # planks = skio.imread('Planks.tif')
-    #
-    # newhouse = skio.imread('newhouse.png')
+        noise = skio.imread('noise.png')
 
-    #bed = skio.imread('Hidden_image.png')
+        cameraman = skio.imread('cameraman.png')
 
-    #decoded = decodeGray(mandrill)
-    # img = skio.imread('lamp.JPG')
-    #img_g = skc.rgb2gray(img) * 255
-    #
-    # img2 = img_g.astype(np.uint8)
-    # decoded = saveDecodedGray(img2, "decoded_2")
-    #decoded = skio.imread('decoded_1.png')
+        planks = skio.imread('Planks.tif')
 
-    #decode images that are 4000,5000 pixels
+        newhouse = skio.imread('newhouse.png')
 
-    # plt.figure(figsize=(10,10))
-    # plt.imshow(decoded, cmap='gray')
+        bed = skio.imread('Hidden_image.png')
 
-    #img = skc.rgb2gray(decoded)
+        img = skio.imread('lamp.JPG')
+        img_g = skc.rgb2gray(img) * 255
 
-    #print(nat_img_dect2(mandrill, True))
+        img2 = img_g.astype(np.uint8)
+        decoded = saveDecodedGray(img2, "decoded_2")
+        decoded = skio.imread('decoded_1.png')
+
+        plt.figure(figsize=(10,10))
+        plt.imshow(decoded, cmap='gray')
+
+        img = skc.rgb2gray(decoded)
+
+        print(nat_img_dect2(mandrill, True))
+
+    if make_img:
+        make_test_images()
 
     test_encoders()
-    #make_test_images()
+
 
 
 
