@@ -31,4 +31,4 @@ You can load all of these dependencies using `pip install`
 `flask_cors`
 `scikit-image`
 
-
+We would also like to thank Nick Jaczko and Josh Yuan for teaching us how to upload images in React.
