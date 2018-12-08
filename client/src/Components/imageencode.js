@@ -1,8 +1,7 @@
-// Initial code from GitHub
-// https://gist.github.com/AshikNesin/e44b1950f6a24cfcd85330ffc1713513
+// informed by the work of Josh Yuan and Nick Jaczko 
+// https://github.com/joshyuan1/JuniorLints/blob/master/client/src/FileUpload.js
 
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import {Input} from 'reactstrap';
 
 
@@ -12,17 +11,13 @@ class ImageEncode extends Component {
 
 
     this.state = {
-      message: '',
       imageurl: '',
     };
   }
 
   firstFileHandler(file) {
     console.log(file.name);
-    this.props.startLoad();
     let contents;
-    const callbackProp = this.props.callback;
-
 
     const reader = new FileReader();
     reader.readAsArrayBuffer(file);
@@ -52,10 +47,7 @@ class ImageEncode extends Component {
 
   secondFileHandler(file) {
     console.log(file.name);
-    this.props.startLoad();
     let contents;
-    const callbackProp = this.props.callback;
-
 
     const reader = new FileReader();
     reader.readAsArrayBuffer(file);
@@ -91,20 +83,15 @@ class ImageEncode extends Component {
 
     return (
       <div>
+        <p> Upload a base image </p>
         {uploadButtonBase}
+        <p> Upload an image to encode</p>
         {uploadButtonHidden}
-        <h1 align="center" >{this.state.message}</h1>
-        {
-          this.state.imageurl && (<img src={this.state.imageurl}/>)
-        }
+        {this.state.imageurl && (<img src={this.state.imageurl}/>)}
       </div>
     );
   }
 }
 
-ImageEncode.propTypes = {
-  callback: PropTypes.func.isRequired,
-  startLoad: PropTypes.func.isRequired,
-};
 
 export default ImageEncode;

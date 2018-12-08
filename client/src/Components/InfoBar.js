@@ -12,7 +12,7 @@
 import React from 'react';
 import { TabContent, TabPane, Nav, NavItem, NavLink, Card, Button, CardTitle, CardText, Row, Col, Form, FormGroup,
   Label, Input, CardImg, CardBody, CardGroup, CardSubtitle } from 'reactstrap';
-import ImageUpload from './imageupload.js'
+import ImageDecode from './imagedecode.js'
 import ImageEncode from './imageencode.js'
 import classnames from 'classnames';
 import julia from './Images/Julia.JPG';
@@ -121,9 +121,7 @@ export default class InfoBar extends React.Component {
               <Col sm="12">
                 <br/ >
                 <div>
-      <ImageEncode
-          callback={(userCode, userOutput) => this.setState({ pyCode: userCode, linterOutput: userOutput, mode: 'view' })}
-          startLoad={() => this.setState({ mode: 'loading' })}/>
+      <ImageEncode/>
                 </div>
               </Col>
             </Row>
@@ -132,12 +130,8 @@ export default class InfoBar extends React.Component {
             <Row>
               <Col sm="12">
                 <br/ >
-                <Form align="left">
-                <p><b>Choose an image to be decoded:</b></p>
-                <ImageUpload
-                  callback={(userCode, userOutput) => this.setState({ pyCode: userCode, linterOutput: userOutput, mode: 'view' })}
-                  startLoad={() => this.setState({ mode: 'loading' })}/>
-                </Form>
+                <p> Choose an Image to be Decoded </p>
+                <ImageDecode/>
               </Col>
             </Row>
           </TabPane>

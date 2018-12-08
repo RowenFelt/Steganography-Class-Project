@@ -56,6 +56,9 @@ def decodeGray(base):
     base = np.reshape(base, bpx)
     print("base after reshape = ",base)
     shape = [0, 0]
+    powers = []
+    for z in range(0,8):
+        powers.append(2**z)
     for i in range(0,2):
         for j in range(0,12):
             bit = base[i * 12 + j] & 1
@@ -72,7 +75,7 @@ def decodeGray(base):
     base = base & 1 #converts to least significant bits only
     for x in range(24, length * 8):
         location = (x-24)//8
-        hidden[location] = hidden[location] | ((2**count)*base[x])
+        hidden[location] = hidden[location] | ((powers[count])*base[x])
         count = (count + 1) % 8
     hidden_new = np.reshape(hidden, (shape[0], shape[1]))
     print("hidden_new", hidden_new)
